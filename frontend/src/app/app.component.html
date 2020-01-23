@@ -1,0 +1,46 @@
+
+<div class="spring-batch d-flex flex-column w-100 h-75 pt-5">
+  <h2 class="ml-4">Monitoring Spring Batch with Quartz Scheduler</h2>
+  <div class="d-flex flex-row">
+    <!-- Status card -->
+    <div class="card ml-4">
+      <h5 class="card-header">Status</h5>
+      <div class="card-body">
+        <h5 class="card-title">Current status : <span [ngClass]="{
+          'badge': true,
+          'badge-danger': schedulerState === 'stopped' || schedulerState === 'paused',
+          'badge-success': schedulerState === 'running'
+        }">{{ schedulerState }}</span></h5>
+        <p class="card-text">You can pause or restart the batch via the button below.</p>
+        <button type="button" id="schedulerControllerBtn" [ngClass]="{
+            'btn': true,
+            'btn-success': schedulerState === 'stopped' || schedulerState === 'paused',
+            'btn-danger': schedulerState === 'running'
+          }" (click)="startOrPause()">
+          <span *ngIf="schedulerState === 'running'">
+            <i class="fa fa-fw fa-pause"></i>
+          </span>
+          <span *ngIf="schedulerState === 'stopped' || schedulerState === 'paused'">
+            <i class="fa fa-fw fa-play"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+    <!-- Config card -->
+    <div class="card ml-4">
+      <h5 class="card-header">Configuration</h5>
+      <div class="card-body">
+        <h5 class="card-title">
+            Cron expression currently applied :
+            <input placeholder="Cron expression" [(ngModel)]="cronExpression" name="cronExpression" type="text">
+            <button type="button" class="btn btn-primary ml-3"
+                (click)="submitConfig()">
+                Save
+            </button>
+        </h5>
+        <p class="card-text">Modify the field above to apply a new schedule to the batch.</p>
+        <div *ngIf="configMessage !== null" [ngClass]="{'alert': true, 'alert-success': !onError, 'alert-danger': onError}">{{ configMessage }}</div>
+      </div>
+    </div>
+  </div>
+</div>
